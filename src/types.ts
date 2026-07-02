@@ -17,6 +17,25 @@ export type ParagraphTiptapNode = {
   content?: ParagraphTiptapNode[];
 };
 
+export type ParagraphTiptapImageAttrs = {
+  mediaId: string;
+  slug: string;
+  alt: string;
+  caption: string;
+  src?: string;
+  title?: string | null;
+  width?: number | null;
+  height?: number | null;
+  fileName?: string;
+  mimeType?: string;
+  size?: number | null;
+};
+
+export type ParagraphTiptapImageNode = {
+  type: "image";
+  attrs: ParagraphTiptapImageAttrs;
+};
+
 export type ParagraphPageContent = string | ParagraphTiptapNode[];
 
 export type ParagraphDataModelField =
@@ -197,9 +216,6 @@ export type ParagraphComponentSlot =
   | "img"
   | "figure"
   | "figcaption"
-  | "imageMeta"
-  | "imageSlug"
-  | "imageAlt"
   | "tableWrapper"
   | "table"
   | "thead"

@@ -204,28 +204,6 @@ function createHtmlRendererOptions(
         );
       }
 
-      if (domNode.name === "div" && domNode.attribs["data-type"] === "editor-image-meta") {
-        return renderSlot("imageMeta", "div", props, options);
-      }
-
-      if (domNode.name === "div" && domNode.attribs["data-type"] === "editor-image") {
-        return renderSlot("figure", "figure", props, options);
-      }
-
-      if (
-        domNode.name === "div" &&
-        domNode.attribs["data-type"] === "editor-image-slug"
-      ) {
-        return renderSlot("imageSlug", "span", props, options);
-      }
-
-      if (
-        domNode.name === "div" &&
-        domNode.attribs["data-type"] === "editor-image-alt"
-      ) {
-        return renderSlot("imageAlt", "span", props, options);
-      }
-
       switch (domNode.name) {
         case "p":
         case "h1":
@@ -301,50 +279,6 @@ function toStringValue(value: unknown) {
   return typeof value === "string" ? value : undefined;
 }
 
-function renderImageMeta(
-  key: string,
-  slug: string | undefined,
-  alt: string | undefined,
-  options: ResolvedRenderOptions,
-) {
-  if (!slug && !alt) {
-    return null;
-  }
-
-  return renderSlot(
-    "imageMeta",
-    "div",
-    {
-      key: `${key}-meta`,
-      children: [
-        slug
-          ? renderSlot(
-              "imageSlug",
-              "span",
-              {
-                key: `${key}-slug`,
-                children: slug,
-              },
-              options,
-            )
-          : null,
-        alt
-          ? renderSlot(
-              "imageAlt",
-              "span",
-              {
-                key: `${key}-alt`,
-                children: alt,
-              },
-              options,
-            )
-          : null,
-      ],
-    },
-    options,
-  );
-}
-
 function renderImageNode(
   attrs: Record<string, unknown> | undefined,
   key: string,
@@ -357,8 +291,8 @@ function renderImageNode(
   }
 
   const alt = toStringValue(attrs?.alt) ?? "";
+  const caption = toStringValue(attrs?.caption);
   const title = toStringValue(attrs?.title);
-  const slug = toStringValue(attrs?.slug);
   const width = toNumber(attrs?.width);
   const height = toNumber(attrs?.height);
 
@@ -377,9 +311,7 @@ function renderImageNode(
     options,
   );
 
-  const imageMeta = renderImageMeta(key, slug, alt || undefined, options);
-
-  if (!imageMeta) {
+  if (!caption) {
     return imageElement;
   }
 
@@ -388,7 +320,15 @@ function renderImageNode(
     "figure",
     {
       key,
-      children: [imageElement, imageMeta],
+      children: [
+        imageElement,
+        renderSlot(
+          "figcaption",
+          "figcaption",
+          { key: `${key}-caption`, children: caption },
+          options,
+        ),
+      ],
     },
     options,
   );

@@ -229,7 +229,7 @@ Available slots:
 - `a`, `strong`, `em`, `u`, `s`
 - `blockquote`, `code`, `pre`
 - `ul`, `ol`, `li`, `hr`, `br`
-- `img`, `figure`, `figcaption`, `imageMeta`, `imageSlug`, `imageAlt`
+- `img`, `figure`, `figcaption`
 - `tableWrapper`, `table`, `thead`, `tbody`, `tr`, `th`, `td`
 - `faq`, `collapsible`, `summary`, `collapsibleContent`
 - `taskList`, `taskItem`, `taskCheckbox`
@@ -277,7 +277,7 @@ It also exports the core type surface, including:
 
 - `ParagraphContent` returns `null` if content is missing.
 - If you fetch page lists from the API, include `content` explicitly with `include_content: true`.
-- Tiptap images returned by Paragraph CMS are already hydrated by the backend with public `src`, `alt`, `width`, and `height`.
+- Tiptap images returned by Paragraph CMS are hydrated with a public `src`; `alt` is rendered on `<img>` and `caption` as `<figcaption>`.
 - Markdown and HTML input are sanitized before rendering. You can customize that behavior with `sanitizeOptions`.
 
 ## License
